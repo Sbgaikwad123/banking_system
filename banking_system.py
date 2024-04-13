@@ -1,45 +1,39 @@
 from random import randint
 
 
-# Bank class to manage bank account operations
 class Bank:
-    # Constructor to initialize bank account details
     def __init__(self) -> None:
-        self.account = randint(100000, 999999)  # Generate a random account number
-        self.full_name = input("Enter name = ")  # Ask for user's full name
-        self.phone_number = int(
-            input("Enter phone number = ")
-        )  # Ask for user's phone number
-        self.balance = 0  # Initialize balance to zero
+        self.account = randint(100000, 999999)
+        self.full_name = input("Enter your full name: ")
+        self.phone_number = int(input("Enter your phone number: "))
+        self.balance = 0
 
-    # Method to display account information
     def show_info(self):
-        print(f"Account number = {self.account}")
-        print(f"Full name = {self.full_name}")
-        print(f"Balance = {self.balance}\n")
+        print(f"\nAccount Number: {self.account}")
+        print(f"Full Name: {self.full_name}")
+        print(f"Phone Number: {self.phone_number}")
+        print(f"Current Balance: {self.balance}\n")
 
-    # Method to display current balance
     def show_balance(self) -> None:
-        print(f"Current balance = {self.balance}")
+        print(f"\nCurrent Balance: {self.balance}")
 
-    # Method to withdraw money from the account
     def withdraw(self) -> None:
-        amount = int(input("Enter amount to withdraw = "))  # Ask for withdrawal amount
+        amount = int(input("\nEnter amount to withdraw: "))
         if amount > self.balance:
-            print("Insufficient balance")  # Display message if balance is insufficient
+            print("Insufficient balance.")
         else:
-            self.balance -= amount  # Deduct the withdrawal amount from balance
+            self.balance -= amount
+            print(f"Withdrawal successful. Current balance: {self.balance}")
 
-    # Method to deposit money into the account
     def deposit(self) -> None:
-        amount = int(input("Enter amount to deposit = "))  # Ask for deposit amount
-        self.balance += amount  # Add the deposit amount to balance
+        amount = int(input("\nEnter amount to deposit: "))
+        self.balance += amount
+        print(f"Deposit successful. Current balance: {self.balance}")
 
 
-banks = []  # List to store bank objects
+banks = []
 
 
-# Function to check if an account with a given account number exists
 def check_account_exists(acc_no: int):
     global banks
     for obj in banks:
@@ -48,87 +42,59 @@ def check_account_exists(acc_no: int):
     return None
 
 
-# Main program loop
 while True:
-    print("1. Create account")
-    print("2. Show all bank details")
-    print("3. Deposit amount")
-    print("4. Withdraw amount")
-    print("5. Transfer amount")
-    print("6. Exit")
-    choice = int(input("Enter choice = "))  # Ask for user's choice
+    print("\nWelcome to the Bank Management System")
+    print("1. Create Account")
+    print("2. Show All Bank Account Details")
+    print("3. Deposit Amount")
+    print("4. Withdraw Amount")
+    print("5. Exit")
 
-    # Create a new bank account
-    if choice == 1:
-        obj = Bank()  # Create a new Bank object
-        banks.append(obj)  # Add the object to the banks list
+    try:
+        choice = int(input("Enter your choice: "))
 
-    # Show all bank account details
-    elif choice == 2:
-        if len(banks) == 0:
-            print("No accounts have been created yet")
-        else:
-            for account in banks:
-                account.show_info()
+        if choice == 1:
+            obj = Bank()
+            banks.append(obj)
+            print("Account created successfully.")
 
-    # Deposit money into an account
-    elif choice == 3:
-        if len(banks) == 0:
-            print("No accounts have been created yet")
-        else:
-            acc_no = int(input("Enter account number to deposit = "))
-            for obj in banks:
-                if obj.account == acc_no:
-                    obj.deposit()
-                    break
-
-    # Withdraw money from an account
-    elif choice == 4:
-        if len(banks) == 0:
-            print("No accounts have been created yet")
-        else:
-            acc_no = int(input("Enter account number to withdraw = "))
-            for obj in banks:
-                if obj.account == acc_no:
-                    obj.withdraw()
-                    break
-
-    # Transfer money between accounts
-    elif choice == 5:
-        from_acc_no = int(
-            input("Enter account number from which you want to transfer = ")
-        )
-        to_acc_no = int(input("Enter account number to which you want to transfer = "))
-        from_acc_obj = check_account_exists(
-            from_acc_no
-        )  # Check if sender's account exists
-        to_acc_obj = check_account_exists(
-            to_acc_no
-        )  # Check if receiver's account exists
-        if from_acc_obj is not None and to_acc_obj is not None:
-            transfer_amount = int(
-                input("Enter transfer amount = ")
-            )  # Ask for transfer amount
-            if from_acc_obj.balance < transfer_amount:
-                print(
-                    "Insufficient balance"
-                )  # Display message if sender's balance is insufficient
+        elif choice == 2:
+            if len(banks) == 0:
+                print("No accounts have been created yet.")
             else:
-                from_acc_obj.balance -= (
-                    transfer_amount  # Deduct transfer amount from sender's balance
-                )
-                to_acc_obj.balance += (
-                    transfer_amount  # Add transfer amount to receiver's balance
-                )
+                for account in banks:
+                    account.show_info()
+
+        elif choice == 3:
+            if len(banks) == 0:
+                print("No accounts have been created yet.")
+            else:
+                acc_no = int(input("Enter account number to deposit: "))
+                for obj in banks:
+                    if obj.account == acc_no:
+                        obj.deposit()
+                        break
+                else:
+                    print("Account not found.")
+
+        elif choice == 4:
+            if len(banks) == 0:
+                print("No accounts have been created yet.")
+            else:
+                acc_no = int(input("Enter account number to withdraw: "))
+                for obj in banks:
+                    if obj.account == acc_no:
+                        obj.withdraw()
+                        break
+                else:
+                    print("Account not found.")
+
+        elif choice == 5:
+            print("Thank you for using the Bank Management System.")
+            break
+
         else:
-            print(
-                "Account does not exist"
-            )  # Display message if one or both accounts don't exist
+            print("Invalid choice. Please enter a valid option.")
 
-    # Exit the program
-    elif choice == 6:
-        break
-
-    # Invalid choice
-    else:
-        print("Invalid Choice")
+    except ValueError:
+        print("Invalid input. Please enter a number.")
